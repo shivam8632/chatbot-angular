@@ -3,13 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { ChatbotComponent } from './chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     ChatbotComponent,
   ],
   imports: [
