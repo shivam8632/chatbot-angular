@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-chatbot',
@@ -8,6 +9,9 @@ import { Component } from '@angular/core';
 export class ChatbotComponent {
   messages: { text: string, sender: string }[] = [];
   userMessage: string = '';
+  isLoading: boolean = false;
+
+  constructor(private http: HttpClient) { }
 
   isChatMessagesScrollable(): boolean {
     const chatMessagesElement = document.querySelector('.chat-messages');
@@ -16,20 +20,23 @@ export class ChatbotComponent {
 
   sendMessage(message: string) {
     this.messages.push({ text: message, sender: 'user' });
+    this.isLoading = true;
+    const formData = new FormData();
+    formData.append('question', message);
 
-    let response: string;
+    this.http.post('http://52.91.18.190:8000/chat/', formData )
+      .subscribe((response: any) => {
+          console.log("Answer", response);
+          const answer = response.answer;
+          this.messages.push({ text: answer, sender: 'bot' });
+          this.isLoading = false;
+        },
+        (error: any) => {
+          console.error('Error:', error);
+          this.isLoading = false;
+        }
+      );
 
-    if (message.toLowerCase().includes('hello')) {
-      response = 'Hello there!';
-    } else if (message.toLowerCase().includes('how are you')) {
-      response = 'I am doing well, thank you!';
-    } else if (message.toLowerCase().includes('goodbye')) {
-      response = 'Goodbye! Take care.';
-    } else {
-      response = "I'm sorry, I didn't understand that.";
-    }
-
-    this.messages.push({ text: response, sender: 'bot' });
     this.userMessage = '';
   }
 
