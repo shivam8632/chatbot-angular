@@ -24,7 +24,7 @@ export class ChatbotComponent {
     const formData = new FormData();
     formData.append('question', message);
 
-    this.http.post('http://52.87.139.120:8000/chat/', formData )
+    this.http.post('http://3.212.224.14:8000/chat/', formData )
       .subscribe((response: any) => {
           console.log("Answer", response);
           const answer = response.answer;
