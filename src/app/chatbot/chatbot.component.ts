@@ -18,6 +18,11 @@ export class ChatbotComponent {
     return chatMessagesElement.scrollHeight > chatMessagesElement.clientHeight;
   }
 
+  startNewChat() {
+    this.messages = [];
+    this.userMessage = '';
+  }
+
   sendMessage(message: string) {
     this.messages.push({ text: message, sender: 'user' });
     this.isLoading = true;
