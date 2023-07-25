@@ -16,6 +16,9 @@
     </div>
   
     <div class="chat-messages" [ngClass]="{ 'scrollable': isChatMessagesScrollable() }">
+      <ng-container *ngIf="messages.length === 0">
+        <h1 class="text-center text-white">Welcome to Chatbot</h1>
+      </ng-container>
       <div *ngFor="let message of messages" [ngClass]="getMessageClass(message)">
         {{ message.text }}
       </div>
