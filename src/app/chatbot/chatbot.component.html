@@ -6,7 +6,7 @@
     <div class="dot"></div>
     <div class="dot"></div>
   </div>
-  <div class="container chat-container">
+  <div class="chat-container">
     <div class="chat-header">
       <h1>Chatbot</h1>
       <p class="mb-0">How can we assist you?</p>
@@ -22,7 +22,7 @@
     </div>
     <div class="input-group mb-3">
       <hr>
-      <input type="text" class="form-control" [(ngModel)]="userMessage" placeholder="Type a message..." (keyup.enter)="sendMessage(userMessage)" />
+      <input type="text" class="form-control" [(ngModel)]="userMessage" [placeholder]="getInputPlaceholder()" (keyup.enter)="sendMessage(userMessage)" />
       <button class="btn btn-primary" (click)="sendMessage(userMessage)">
         <svg id="ic_send" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
       </button>

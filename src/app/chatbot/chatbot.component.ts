@@ -47,4 +47,8 @@ export class ChatbotComponent {
       return 'bot-message';
     }
   }
+
+  getInputPlaceholder(): string {
+    return this.messages.length === 0 ? 'Hello! How can I help you?' : 'Type a Message';
+  }
 }
