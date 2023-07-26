@@ -15,14 +15,12 @@
     
       <div class="chat-messages" [ngClass]="{'scrollable': isChatMessagesScrollable()}" [class.empty-chat]="messages.length === 0">
         <ng-container *ngIf="messages.length === 0">
-          <h1 class="text-center text-dark">Front end classification ZAK APP</h1>
+          <h1 class="text-center text-dark">Welcome to Chatbot</h1>
         </ng-container>
         <div *ngFor="let message of messages" [ngClass]="getMessageClass(message)">
           {{ message.text }}
         </div>
         <div *ngIf="isLoading" class="loader">
-          <div class="dot"></div>
-          <div class="dot"></div>
           <div class="dot"></div>
           <div class="dot"></div>
           <div class="dot"></div>
