@@ -12,11 +12,6 @@ export class ChatbotComponent {
   isLoading: boolean = false;
 
   constructor(private http: HttpClient) { }
-  
-  ngOnInit() {
-    this.messages.push({ text: 'Hello! How can I help you?', sender: 'bot' });
-  }
-
   isChatMessagesScrollable(): boolean {
     const chatMessagesElement = document.querySelector('.chat-messages');
     return chatMessagesElement.scrollHeight > chatMessagesElement.clientHeight;
@@ -25,6 +20,10 @@ export class ChatbotComponent {
   startNewChat() {
     this.messages = [];
     this.userMessage = '';
+  }
+
+  updateInputValue(buttonText: string) {
+    this.userMessage = buttonText;
   }
 
   sendMessage(message: string) {
