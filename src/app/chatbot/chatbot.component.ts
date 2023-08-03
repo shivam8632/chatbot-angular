@@ -31,22 +31,44 @@ export class ChatbotComponent {
     this.isLoading = true;
     const formData = new FormData();
     formData.append('question', message);
-
-    this.http.post('http://3.212.224.14:8000/chat/', formData )
+  
+    this.http.post('http://3.212.224.14:8000/chat/', formData)
       .subscribe((response: any) => {
-          console.log("Answer", response);
-          const answer = response.answer;
-          this.messages.push({ text: answer, sender: 'bot' });
-          this.isLoading = false;
-        },
-        (error: any) => {
-          console.error('Error:', error);
-          this.isLoading = false;
-        }
-      );
-
+        console.log("Answer", response);
+        const answer = response.answer;
+        this.showTypingEffect(answer);
+      },
+      (error: any) => {
+        console.error('Error:', error);
+        this.isLoading = false;
+      }
+    );
+  
     this.userMessage = '';
   }
+  
+  showTypingEffect(answer: string) {
+    const typingInterval = 80;
+    const typingChars = ['.', '..', '...'];
+  
+    this.isLoading = false;
+  
+    const showNextChar = (index: number, typingMessage: string) => {
+      if (index < answer.length) {
+        typingMessage += answer.charAt(index);
+        this.messages[this.messages.length - 1].text = typingMessage;
+        setTimeout(() => showNextChar(index + 1, typingMessage), typingInterval);
+      } else {
+        this.messages.pop();
+        this.messages.push({ text: answer, sender: 'bot' });
+      }
+    };
+  
+    let typingMessage = typingChars[0];
+    this.messages.push({ text: typingMessage, sender: 'bot' });
+    showNextChar(0, typingMessage);
+  }
+  
 
   getMessageClass(message: any): string {
     if (message.sender === 'user') {
