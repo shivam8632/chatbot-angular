@@ -28,10 +28,11 @@ export class ChatbotComponent {
   }
 
   sendMessage(message: string) {
+    if (!message.trim()) {
+      return;
+    }
     this.messages.push({ text: message, sender: 'user' });
     const chatMessagesElement = document.querySelector('.chat-messages');
-  
-    // Check if the user is not at the bottom of the chat container
     const isUserAtBottom = chatMessagesElement.scrollHeight - chatMessagesElement.clientHeight <= chatMessagesElement.scrollTop + 1;
     this.isLoading = true;
   
@@ -44,7 +45,6 @@ export class ChatbotComponent {
           const answer = response.answer;
   
           if (!isUserAtBottom) {
-            // Scroll to the bottom if the user is not there before showing the loader
             chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
           }
   
