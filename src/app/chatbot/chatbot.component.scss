@@ -5,7 +5,6 @@
   align-items: center;
   .chat-container {
     margin: 0 auto;
-    box-shadow: rgb(0 18 46 / 16%) 0px 8px 36px 0px;
     padding: 0;
     width: 100%;
     height: 100vh;
@@ -15,6 +14,10 @@
       color: rgb(255, 255, 255);
       background: rgb(86, 87, 88);
       padding: 15px;
+      min-height: 100vh;
+      height: 100%;
+      position: fixed;
+      left: 0;
       button {
         width: 100%;
         margin-bottom: 10px;
@@ -25,6 +28,7 @@
       flex-direction: column;
       justify-content: space-between;
       width: 85%;
+      margin-left: auto;
       .chat-header {
         padding: 24px 28px 0px;
         position: relative;
@@ -33,19 +37,67 @@
       }
     
       .chat-messages {
-        padding: 10px 25px;
-        overflow-y: auto;
+        padding: 10px 25px 10rem;
         position: relative;
-    
-        &::-webkit-scrollbar {
-          width: 5px;
-          height: 8px;
-          background-color: #aaa;
-        }
-    
-        &::-webkit-scrollbar-thumb {
+        height: fit-content;
+        .loader {
+          display: flex;
+          position: absolute;
+          bottom: 145px;
+          left: 70px;
           background: #000;
+          z-index: 99;
+          width: 95px;
+          color: #000;
+          padding: 10px 24px;
+          justify-content: center;
+          align-items: center;
+          border-radius: 40px;
+          &::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-right: 4px solid transparent;
+            border-left: 5px solid transparent;
+            border-top: 15px solid #000;
+            position: absolute;
+            bottom: -2px;
+            left: -5px;
+            transform: rotate(60deg);
+          }
+          .dot {
+            height: 10px;
+            width: 10px;
+            margin-right: 10px;
+            border-radius: 10px;
+            background-color: #000;
+            animation: pulse 1.5s infinite ease-in-out;
+            &:last-child {
+              margin-right: 0;
+            }
+            &:nth-child(1) {
+              animation-delay: -0.3s;
+            }
+            &:nth-child(2) {
+              animation-delay: -0.1s;
+            }
+            &:nth-child(3) {
+              animation-delay: 0.1s;
+            }
+          }
         }
+
+
+          &::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+            background-color: #aaa;
+          }
+      
+          &::-webkit-scrollbar-thumb {
+            background: #000;
+          }
+        
 
         .logo {
           max-width: 120px;
@@ -82,7 +134,7 @@
         }
         
         .user-message {
-          padding-right: 35px;
+          padding-right: 45px;
 
           .user-messages {
             background-color: #505052;
@@ -126,7 +178,7 @@
         }
     
         .bot-message {
-          padding-left: 30px;
+          padding-left: 50px;
           .bot-messages {
             background-color: #434753;
             color: #fff;
@@ -168,96 +220,62 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: calc(100% - 80px);
       }
     
-      .scrollable {
-        overflow-y: scroll;
-      }
+      // .scrollable {
+      //   overflow-y: scroll;
+      // }
     
       .input-group {
-        margin-top: 20px;
-        padding: 0 20px 20px;
+        padding: 0 3rem 20px 20px;
         justify-content: space-between;
-        input {
-          border: none;
-          outline: none;
-          box-shadow: none;
-          border-top: 1px solid 000;
-          flex: unset !important;
-          width: calc(100% - 80px);
-          box-shadow: -2px 2px 18px rgba(0,0,0,.1);
-          border-radius: 5px;
-        }
-        button {
-          background: rgb(86, 87, 88);
-          box-shadow: rgb(2 6 16 / 20%) 0px 2px 16px;
-          width: 60px;
-          height: 60px;
-          border-radius: 50% !important;
-          display: inherit;
-          -webkit-box-align: center;
-          align-items: center;
-          -webkit-box-pack: center;
-          justify-content: center;
-          pointer-events: initial;
-          background-size: 130% 130%;
-          transition: all 0.2s ease-in-out 0s;
-          position: relative;
-          border: none;
-        }
-        .copyright {
-          font-size: 11px;
-          color: #818181;
+        position: fixed;
+        bottom: -16px;
+        right: 0;
+        margin: 20px auto 0;
+        width: 85%;
+        background-color: #fff;
+        z-index: 100;
+        .input-group-container {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: stretch;
+          justify-content: space-between;
+          width: 100%;
+          padding: 0 5rem;
+          input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            border-top: 1px solid 000;
+            flex: unset !important;
+            width: calc(100% - 80px);
+            box-shadow: -2px 2px 18px rgba(0,0,0,.1);
+            border-radius: 5px;
+          }
+          button {
+            background: rgb(86, 87, 88);
+            box-shadow: rgb(2 6 16 / 20%) 0px 2px 16px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50% !important;
+            display: inherit;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            pointer-events: initial;
+            background-size: 130% 130%;
+            transition: all 0.2s ease-in-out 0s;
+            position: relative;
+            border: none;
+          }
+          .copyright {
+            font-size: 11px;
+            color: #818181;
+          }
         }
       }
-    }
-  }
-}
-
-.loader {
-  display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 30px;
-  background: #000;
-  z-index: 9999;
-  width: 95px;
-  color: #000;
-  padding: 10px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 40px;
-  &::before {
-    content: '';
-    width: 0;
-    height: 0;
-    border-right: 4px solid transparent;
-    border-left: 5px solid transparent;
-    border-top: 15px solid #000;
-    position: absolute;
-    bottom: -2px;
-    left: -5px;
-    transform: rotate(60deg);
-  }
-  .dot {
-    height: 10px;
-    width: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
-    background-color: #000;
-    animation: pulse 1.5s infinite ease-in-out;
-    &:last-child {
-      margin-right: 0;
-    }
-    &:nth-child(1) {
-      animation-delay: -0.3s;
-    }
-    &:nth-child(2) {
-      animation-delay: -0.1s;
-    }
-    &:nth-child(3) {
-      animation-delay: 0.1s;
     }
   }
 }

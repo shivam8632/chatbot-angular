@@ -10,6 +10,7 @@ export class ChatbotComponent {
   messages: { text: string, sender: string }[] = [];
   userMessage: string = '';
   isLoading: boolean = false;
+  isBotTyping: boolean = false;
 
   constructor(private http: HttpClient) { }
   isChatMessagesScrollable(): boolean {
@@ -28,45 +29,58 @@ export class ChatbotComponent {
 
   sendMessage(message: string) {
     this.messages.push({ text: message, sender: 'user' });
+    const chatMessagesElement = document.querySelector('.chat-messages');
+  
+    // Check if the user is not at the bottom of the chat container
+    const isUserAtBottom = chatMessagesElement.scrollHeight - chatMessagesElement.clientHeight <= chatMessagesElement.scrollTop + 1;
     this.isLoading = true;
+  
     const formData = new FormData();
     formData.append('question', message);
   
     this.http.post('http://3.212.224.14:8000/chat/', formData)
       .subscribe((response: any) => {
-        console.log("Answer", response);
-        const answer = response.answer;
-        this.showTypingEffect(answer);
-      },
-      (error: any) => {
-        console.error('Error:', error);
-        this.isLoading = false;
-      }
-    );
+          console.log("Answer", response);
+          const answer = response.answer;
+  
+          if (!isUserAtBottom) {
+            // Scroll to the bottom if the user is not there before showing the loader
+            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+          }
+  
+          this.showTypingEffect(answer);
+        },
+        (error: any) => {
+          console.error('Error:', error);
+          this.isLoading = false;
+        }
+      );
   
     this.userMessage = '';
   }
-  
+
   showTypingEffect(answer: string) {
-    const typingInterval = 80;
+    const typingInterval = 50;
     const typingChars = ['.', '..', '...'];
-  
+
+    this.isBotTyping = true;
     this.isLoading = false;
-  
+
+    this.messages.push({ text: '', sender: 'bot' });
+
     const showNextChar = (index: number, typingMessage: string) => {
       if (index < answer.length) {
         typingMessage += answer.charAt(index);
         this.messages[this.messages.length - 1].text = typingMessage;
         setTimeout(() => showNextChar(index + 1, typingMessage), typingInterval);
       } else {
-        this.messages.pop();
+        this.messages.pop(); 
         this.messages.push({ text: answer, sender: 'bot' });
+        this.isBotTyping = false; 
       }
     };
-  
-    let typingMessage = typingChars[0];
-    this.messages.push({ text: typingMessage, sender: 'bot' });
-    showNextChar(0, typingMessage);
+
+    showNextChar(0, '');
   }
   
 
